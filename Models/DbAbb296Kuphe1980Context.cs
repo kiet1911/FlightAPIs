@@ -6,6 +6,7 @@ namespace FlightAPIs.Models;
 
 public partial class DbAbb296Kuphe1980Context : DbContext
 {
+    protected String DbConnectionString { get; set; } = "data Source=SQL1004.site4now.net;Initial Catalog=db_abb296_kuphe1980;User Id=db_abb296_kuphe1980_admin;Password=Kuphe1980";
     public DbAbb296Kuphe1980Context()
     {
     }
@@ -58,9 +59,13 @@ public partial class DbAbb296Kuphe1980Context : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("data Source=SQL1004.site4now.net;Initial Catalog=db_abb296_kuphe1980;User Id=db_abb296_kuphe1980_admin;Password=Kuphe1980");
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+    {
+        if (!optionsBuilder.IsConfigured) {
+            optionsBuilder.UseSqlServer(DbConnectionString);
+        }
 
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Admin>(entity =>

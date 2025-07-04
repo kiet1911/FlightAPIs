@@ -3,6 +3,7 @@ using FlightAPIs.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Azure.Core.Serialization;
+using Microsoft.AspNetCore.Authorization;
 namespace FlightAPIs.Controllers
 {
     [ApiController]
@@ -35,7 +36,7 @@ namespace FlightAPIs.Controllers
         }
 
         [HttpGet]
-        public async Task<TicketManager> User()
+        public new async Task<TicketManager?> User()
         {
 
             var dataF = await db_contex.TicketManagers.FindAsync(2);
