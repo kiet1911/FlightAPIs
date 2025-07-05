@@ -6,8 +6,10 @@ using Azure.Core.Serialization;
 using Microsoft.AspNetCore.Authorization;
 namespace FlightAPIs.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]/[action]")]
+    [Authorize(Roles ="Admin")]
     public class WeatherForecastController : ControllerBase
     {
         DbAbb296Kuphe1980Context db_contex = new DbAbb296Kuphe1980Context();
