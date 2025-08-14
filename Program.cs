@@ -17,12 +17,25 @@ builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializ
 //    {
 //        o.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
 //        o.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0;
-        
+
 //    }
 //    );
 //add endpoint
 //builder.Services.AddEndpointsApiExplorer();
 //add swagger gen options
+//builder.Services.AddCors(options =>
+//{
+//    options.AddDefaultPolicy(
+//        policy =>
+//        {
+           
+//            // Ví d?: "http://127.0.0.1:5500", "http://localhost:5500"
+//            policy.AllowAnyOrigin()
+//                  .AllowAnyHeader() 
+//                  .AllowAnyMethod(); 
+                                   
+//        });
+//});
 builder.Services.AddSwaggerGen(o =>
 {
     o.SwaggerDoc("v1", new() { Title = "FlightAPI", Version = "v1" });
@@ -30,6 +43,7 @@ builder.Services.AddSwaggerGen(o =>
     //add scheme to security defition
     o.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
+        Name = "Authorization",
         Type = SecuritySchemeType.Http,
         In = ParameterLocation.Header,
         Scheme = "Bearer",
@@ -44,12 +58,11 @@ builder.Services.AddSwaggerGen(o =>
         {
             Reference = new OpenApiReference
             {
-                Id = "Bearer",
-                Type = ReferenceType.SecurityScheme
-            },
-            In = ParameterLocation.Header,
+                Type = ReferenceType.SecurityScheme,
+                 Id = "Bearer"
+            }
         },
-       new List<string>()
+        new string[] {}
     }
     });
 
@@ -89,27 +102,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     }
 );
 builder.Services.AddAuthorization();
+
 builder.Services.AddScoped<TokenProvider>();
 //---------------------------------//
 //create builder
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 //check development in properties launchSettings.json
-if (app.Environment.IsDevelopment())
-{
-    
+//if (app.Environment.IsDevelopment())
+//{
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "FlightAPI V1");
     });
-    app.MapGet("/", async context =>
-    {
-        await Task.Run(() => context.Response.Redirect("./swagger/index.html"));
-    }
-    );
-    app.UseDeveloperExceptionPage();
-}
+    //app.MapGet("/", async context =>
+    //{
+    //    await Task.Run(() => context.Response.Redirect("./swagger/index.html"));
+    //}
+    //);
+    
+//}
+app.UseRouting();
+//app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -117,36 +133,3 @@ app.MapControllers();
 
 //runn app 
 app.Run();
-//if use openapi
-//internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider) : IOpenApiDocumentTransformer
-//{
-//    public async Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
-//    {
-//        var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
-//        if (authenticationSchemes.Any(authScheme => authScheme.Name == "Bearer"))
-//        {
-//            var securityScheme = new OpenApiSecurityScheme
-//            {
-//                Type = SecuritySchemeType.Http,
-//                In = ParameterLocation.Header,
-//                Scheme = "Bearer",
-//                BearerFormat = "JWT",
-//                Description = "JWT Authorization header using the Bearer scheme.",
-//                Reference = new OpenApiReference
-//                {
-//                    Type = ReferenceType.SecurityScheme,
-//                    Id = "Bearer"
-//                }
-//            };
-//            document.Components ??= new OpenApiComponents();
-//            document.Components.SecuritySchemes ??= new Dictionary<string, OpenApiSecurityScheme>();
-//            document.Components.SecuritySchemes["Bearer"] = securityScheme;
-
-//            document.SecurityRequirements ??= new List<OpenApiSecurityRequirement>();
-//            document.SecurityRequirements.Add(new OpenApiSecurityRequirement
-//            {
-//                { securityScheme, Array.Empty<string>() }
-//            });
-//        }
-//    }
-//}
