@@ -1,9 +1,11 @@
-﻿using FlightAPIs.Models;
+﻿using FlightAPIs.Controllers.RequestData;
+using FlightAPIs.Internal.Token;
+using FlightAPIs.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FlightAPIs.Internal.Token;
-using Microsoft.AspNetCore.Authorization;
 namespace FlightAPIs.Controllers
 {
     [ApiController]
@@ -31,8 +33,7 @@ namespace FlightAPIs.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        [Route("GetUsers")]
+        [HttpGet("GetUsers")]
         public async Task<List<User>?> GetUser()
         {
             try {
@@ -49,12 +50,13 @@ namespace FlightAPIs.Controllers
                 return null;
             }
         }
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> getUserId(int i)
+        public async Task<IActionResult> getUserId([FromQuery] GetUserId i)
         {
             try
             {
-                var user = await db_contex.Users.FindAsync(i);
+                var user = await db_contex.Users.FindAsync(i.Id);
                 if (user == null)
                 {
                     return BadRequest();

@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Azure.Core.Serialization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace FlightAPIs.Controllers
 {
-
+    [Authorize]
     [ApiController]
     [Route("api/[controller]/[action]")]
-    [Authorize(Roles ="Admin")]
     public class WeatherForecastController : ControllerBase
     {
         DbAbb296Kuphe1980Context db_contex = new DbAbb296Kuphe1980Context();
@@ -51,7 +51,5 @@ namespace FlightAPIs.Controllers
             return null;
 
         }
-
-
     }
 }
