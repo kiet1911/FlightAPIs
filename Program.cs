@@ -28,14 +28,17 @@ builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializ
 //    options.AddDefaultPolicy(
 //        policy =>
 //        {
-           
+
 //            // Ví d?: "http://127.0.0.1:5500", "http://localhost:5500"
 //            policy.AllowAnyOrigin()
 //                  .AllowAnyHeader() 
 //                  .AllowAnyMethod(); 
-                                   
+
 //        });
 //});
+//add logging 
+builder.Services.AddLogging();
+
 builder.Services.AddSwaggerGen(o =>
 {
     o.SwaggerDoc("v1", new() { Title = "FlightAPI", Version = "v1" });

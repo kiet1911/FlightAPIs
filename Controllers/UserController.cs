@@ -13,9 +13,11 @@ namespace FlightAPIs.Controllers
     public class UserController : Controller
     {
         DbAbb296Kuphe1980Context db_contex = new DbAbb296Kuphe1980Context();
-        public IConfiguration Configuration;
-        public UserController(IConfiguration configuration) {
-            this.Configuration = configuration;
+        public IConfiguration Configuration;//to take data from appsetting 
+        public ILogger<UserController> Logger;
+        public UserController(IConfiguration _configuration,ILogger<UserController> _logger) {
+            this.Configuration = _configuration;
+            this.Logger = _logger;
         }
 
         //Login , Create token
@@ -36,17 +38,21 @@ namespace FlightAPIs.Controllers
         [HttpGet("GetUsers")]
         public async Task<List<User>?> GetUser()
         {
+            Logger.LogInformation("start GetUser At {0}", DateTime.Now.Millisecond);
             try {
                 var Users = await db_contex.Users.ToListAsync();
                 if (Users == null || !Users.Any())
                 {
+                    Logger.LogWarning("Users table is empty");
                     return null;
                 }
+                Logger.LogInformation("end GetUser At {0}", DateTime.Now.Millisecond);
                 return Users;
 
             }
             catch (Exception ex)
             {
+                Logger.LogError(ex, ex.Message);
                 return null;
             }
         }
