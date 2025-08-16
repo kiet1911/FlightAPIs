@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using FlightAPIs.Helper;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to builder
@@ -100,11 +101,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
                 }.ToJson());
 
             }
-            
         };
     }
 );
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(option => 
+{
+    option.AddPolicy("roleSecurity", policy => { policy.RequireRole("Admin","Employee"); });
+});
 
 builder.Services.AddScoped<TokenProvider>();
 //---------------------------------//
