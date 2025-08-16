@@ -24,7 +24,7 @@ namespace FlightAPIs.Internal.Token
                 Subject = new ClaimsIdentity(
                 [
                         new Claim("UserId",user.Id.ToString()),
-                        new Claim(ClaimTypes.Role,user.UserType==1?"User":"Admin")
+                        new Claim(ClaimTypes.Role,user.UserType==1?"User":"Employee")
                     ]
                 ),
                 Expires = DateTime.UtcNow.AddHours(1),
