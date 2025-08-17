@@ -14,4 +14,5 @@ public partial class Payment
     public string? PayerIdPayment { get; set; }
 
     public int? UserId { get; set; }
+    //public virtual User? user { get; set; } = null;
 }
