@@ -117,6 +117,14 @@ namespace FlightAPIs.Controllers
         [HttpDelete]
         public async Task<IActionResult> paymentDelete(int idpayment)
         {
+
+            //check payment in ticket 
+            bool existUsedTicket = db_context.TicketManagers.Where(u=> u.PayId == idpayment).Any();
+            if (existUsedTicket)
+            {
+                return BadRequest("can not delete payment being used by ticket");
+            }
+
             try
             {
                db_context.Payments.Remove(db_context.Payments.Where(u => u.Id == idpayment).FirstOrDefault());
