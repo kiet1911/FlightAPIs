@@ -23,19 +23,19 @@ namespace FlightAPIs.Controllers
             this.Configuration = _configuration;
             this.Logger = _logger;
         }
-        //Login admin or employee , Create token and LogIn
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> Login(String Name, String Password)
-        {
-            var userDetail = await db_contex.Admins.Where(u => u.Email == Name.Trim() && u.Password == Password.Trim()).FirstOrDefaultAsync();
-            if (userDetail == null) {
-                return BadRequest();
-            }
-            EmployeeTokenProvider tokenPro = new EmployeeTokenProvider(Configuration);
-            var token = tokenPro.createEmployeeToken(userDetail);
-            return Ok(token);
-        }
+        ////Login admin or employee , Create token and LogIn
+        //[AllowAnonymous]
+        //[HttpPost]
+        //public async Task<IActionResult> Login(String Name, String Password)
+        //{
+        //    var userDetail = await db_contex.Admins.Where(u => u.Email == Name.Trim() && u.Password == Password.Trim()).FirstOrDefaultAsync();
+        //    if (userDetail == null) {
+        //        return BadRequest();
+        //    }
+        //    EmployeeTokenProvider tokenPro = new EmployeeTokenProvider(Configuration);
+        //    var token = tokenPro.createEmployeeToken(userDetail);
+        //    return Ok(token);
+        //}
         //create user
         [Authorize(Policy = "roleSecurity")]
         [HttpPost]
