@@ -12,4 +12,6 @@ public partial class AirPort
     public string Code { get; set; } = null!;
 
     public string Address { get; set; } = null!;
+    public virtual ICollection<FlightSchedule> flightSchedules { get; set; } = new List<FlightSchedule>();
+    public virtual ICollection<FlightSchedule> flightSchedulesTo { get; set; } = new List<FlightSchedule>();
 }

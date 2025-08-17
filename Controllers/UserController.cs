@@ -70,71 +70,6 @@ namespace FlightAPIs.Controllers
             return Ok("new user has been added successful");
             
         }
-        //take signle user by id
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> userDetailById([FromQuery] GetUserId i)
-        { 
-            try
-            {
-                var user = await db_contex.Users.FindAsync(i.Id);
-                if (user == null)
-                {
-                    return BadRequest();
-                }
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return Unauthorized();
-
-            }
-        }
-        //take user by pagition 
-        [Authorize(Policy = "roleSecurity")]
-        [HttpPost]
-        public async Task<IActionResult> userOffset(int? id = 0)
-        {
-            int skipAmount = (int)id * 3;
-            List<User> userLists;
-            try
-            {
-               userLists = await db_contex.Users.OrderBy(p => p.Id).Skip(skipAmount).Take(3).ToListAsync();
-               if(userLists == null)
-                {
-                    return Ok("user is over");
-                }
-            }
-            catch (SqlException ex)
-            {
-                return BadRequest(ex.InnerException?.Message);
-            }
-            return Ok(userLists);
-        }
-        //Take all user  
-        [Authorize(Policy = "roleSecurity")]
-        [HttpGet]
-        public async Task<List<User>?> userAll()
-        {
-            Logger.LogInformation("start GetUser At {0}", DateTime.Now.Millisecond);//start logging 
-            try
-            {
-                var Users = await db_contex.Users.ToListAsync();
-                if (Users == null || !Users.Any())
-                {
-                    Logger.LogWarning("Users table is empty");//logging warning non Users
-                    return null;
-                }
-                Logger.LogInformation("end GetUser At {0}", DateTime.Now.Millisecond);//end logging
-                return Users;
-
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);//logging error 
-                return null;
-            }
-        }
         //update user
         [Authorize(Policy = "roleSecurity")]
         [HttpPut]
@@ -201,6 +136,71 @@ namespace FlightAPIs.Controllers
                 return BadRequest(ex.InnerException?.Message);
             }
             return Ok("delete success user with id:" + String.Format("{0}", id));
+        }
+        //take signle user by id
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> userDetailById([FromQuery] GetUserId i)
+        {
+            try
+            {
+                var user = await db_contex.Users.FindAsync(i.Id);
+                if (user == null)
+                {
+                    return BadRequest();
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized();
+
+            }
+        }
+        //take user by pagition 
+        [Authorize(Policy = "roleSecurity")]
+        [HttpGet]
+        public async Task<IActionResult> userOffset(int? id = 0)
+        {
+            int skipAmount = (int)id * 3;
+            List<User> userLists;
+            try
+            {
+                userLists = await db_contex.Users.OrderBy(p => p.Id).Skip(skipAmount).Take(3).ToListAsync();
+                if (userLists == null)
+                {
+                    return Ok("user is over");
+                }
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.InnerException?.Message);
+            }
+            return Ok(userLists);
+        }
+        //Take all user  
+        [Authorize(Policy = "roleSecurity")]
+        [HttpGet]
+        public async Task<List<User>?> userAll()
+        {
+            Logger.LogInformation("start GetUser At {0}", DateTime.Now.Millisecond);//start logging 
+            try
+            {
+                var Users = await db_contex.Users.ToListAsync();
+                if (Users == null || !Users.Any())
+                {
+                    Logger.LogWarning("Users table is empty");//logging warning non Users
+                    return null;
+                }
+                Logger.LogInformation("end GetUser At {0}", DateTime.Now.Millisecond);//end logging
+                return Users;
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);//logging error 
+                return null;
+            }
         }
 
     }
