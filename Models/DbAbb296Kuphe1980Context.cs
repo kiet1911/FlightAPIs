@@ -267,6 +267,12 @@ public partial class DbAbb296Kuphe1980Context : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("PayerID_Payment");
             entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            //entity.HasOne(u => u.user).WithMany()
+            //.HasForeignKey(p => p.UserId)
+            //.HasConstraintName("FK_User_Id")
+            //.OnDelete(DeleteBehavior.SetNull);
+
         });
 
         modelBuilder.Entity<Plane>(entity =>
