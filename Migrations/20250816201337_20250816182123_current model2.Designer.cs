@@ -4,6 +4,7 @@ using FlightAPIs.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlightAPIs.Migrations
 {
     [DbContext(typeof(DbAbb296Kuphe1980Context))]
-    partial class DbAbb296Kuphe1980ContextModelSnapshot : ModelSnapshot
+    [Migration("20250816201337_20250816182123_current model2")]
+    partial class _20250816182123_currentmodel2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,7 +234,7 @@ namespace FlightAPIs.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("status_fs");
 
-                    b.Property<int>("ToAirportID")
+                    b.Property<int>("ToAirport")
                         .HasColumnType("int")
                         .HasColumnName("to_airport");
 
@@ -242,10 +245,6 @@ namespace FlightAPIs.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FromAirportId");
-
-                    b.HasIndex("PlaneId");
-
-                    b.HasIndex("ToAirportID");
 
                     b.ToTable("FlightSchedules");
                 });
@@ -694,23 +693,7 @@ namespace FlightAPIs.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_AirPort_From");
 
-                    b.HasOne("FlightAPIs.Models.Plane", "Plane")
-                        .WithMany("flightSchedules")
-                        .HasForeignKey("PlaneId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Plan_Id");
-
-                    b.HasOne("FlightAPIs.Models.AirPort", "ToAirport")
-                        .WithMany("flightSchedulesTo")
-                        .HasForeignKey("ToAirportID")
-                        .IsRequired()
-                        .HasConstraintName("FK_AirPort_To");
-
                     b.Navigation("FromAirport");
-
-                    b.Navigation("Plane");
-
-                    b.Navigation("ToAirport");
                 });
 
             modelBuilder.Entity("FlightAPIs.Models.JobParameter", b =>
@@ -770,8 +753,6 @@ namespace FlightAPIs.Migrations
             modelBuilder.Entity("FlightAPIs.Models.AirPort", b =>
                 {
                     b.Navigation("flightSchedules");
-
-                    b.Navigation("flightSchedulesTo");
                 });
 
             modelBuilder.Entity("FlightAPIs.Models.FlightSchedule", b =>
@@ -786,11 +767,6 @@ namespace FlightAPIs.Migrations
                     b.Navigation("JobParameters");
 
                     b.Navigation("States");
-                });
-
-            modelBuilder.Entity("FlightAPIs.Models.Plane", b =>
-                {
-                    b.Navigation("flightSchedules");
                 });
 
             modelBuilder.Entity("FlightAPIs.Models.User", b =>

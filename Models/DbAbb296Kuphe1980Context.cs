@@ -169,13 +169,31 @@ public partial class DbAbb296Kuphe1980Context : DbContext
             entity.Property(e => e.DeparturesAt)
                 .HasColumnType("datetime")
                 .HasColumnName("departures_at");
-            entity.Property(e => e.FromAirport).HasColumnName("from_airport");
+            entity.Property(e => e.FromAirportId).HasColumnName("from_airport");
             entity.Property(e => e.PlaneId).HasColumnName("plane_id");
             entity.Property(e => e.StatusFs)
                 .HasMaxLength(50)
                 .HasColumnName("status_fs");
-            entity.Property(e => e.ToAirport).HasColumnName("to_airport");
+            entity.Property(e => e.ToAirportID).HasColumnName("to_airport");
             entity.Property(e => e.TotalSeats).HasColumnName("totalSeats");
+            //foreign 
+            entity.HasOne(d => d.FromAirport)
+                  .WithMany(a => a.flightSchedules)   // navigation ngược
+                  .HasForeignKey(d => d.FromAirportId)
+                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .HasConstraintName("FK_AirPort_From");
+
+            entity.HasOne(d => d.ToAirport)
+            .WithMany(a => a.flightSchedulesTo)
+            .HasForeignKey(d => d.ToAirportID)
+            .OnDelete(DeleteBehavior.ClientSetNull)
+            .HasConstraintName("FK_AirPort_To");
+
+            entity.HasOne(d => d.Plane)
+            .WithMany(a => a.flightSchedules)
+            .HasForeignKey(d => d.PlaneId)
+            .OnDelete(DeleteBehavior.ClientSetNull)
+            .HasConstraintName("FK_Plan_Id");
         });
 
         modelBuilder.Entity<Hash>(entity =>

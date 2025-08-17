@@ -4,6 +4,7 @@ using FlightAPIs.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlightAPIs.Migrations
 {
     [DbContext(typeof(DbAbb296Kuphe1980Context))]
-    partial class DbAbb296Kuphe1980ContextModelSnapshot : ModelSnapshot
+    [Migration("20250816203423_fixflightdatabase")]
+    partial class fixflightdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,8 +245,6 @@ namespace FlightAPIs.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FromAirportId");
-
-                    b.HasIndex("PlaneId");
 
                     b.HasIndex("ToAirportID");
 
@@ -694,12 +695,6 @@ namespace FlightAPIs.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_AirPort_From");
 
-                    b.HasOne("FlightAPIs.Models.Plane", "Plane")
-                        .WithMany("flightSchedules")
-                        .HasForeignKey("PlaneId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Plan_Id");
-
                     b.HasOne("FlightAPIs.Models.AirPort", "ToAirport")
                         .WithMany("flightSchedulesTo")
                         .HasForeignKey("ToAirportID")
@@ -707,8 +702,6 @@ namespace FlightAPIs.Migrations
                         .HasConstraintName("FK_AirPort_To");
 
                     b.Navigation("FromAirport");
-
-                    b.Navigation("Plane");
 
                     b.Navigation("ToAirport");
                 });
@@ -786,11 +779,6 @@ namespace FlightAPIs.Migrations
                     b.Navigation("JobParameters");
 
                     b.Navigation("States");
-                });
-
-            modelBuilder.Entity("FlightAPIs.Models.Plane", b =>
-                {
-                    b.Navigation("flightSchedules");
                 });
 
             modelBuilder.Entity("FlightAPIs.Models.User", b =>
