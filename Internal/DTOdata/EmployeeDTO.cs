@@ -1,4 +1,6 @@
-﻿namespace FlightAPIs.Internal.DTOdata
+﻿using System.ComponentModel;
+
+namespace FlightAPIs.Internal.DTOdata
 {
     public class EmployeeDTO
     {

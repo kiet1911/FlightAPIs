@@ -26,8 +26,8 @@ namespace FlightAPIs.Controllers
         //create employee 
         //user DTO employee
         [Authorize(Roles ="Admin")]
-        [HttpPost]
-        public async Task<IActionResult> employeeCreate([FromForm] EmployeeDTO employeeDTO)
+        [HttpPost("employee")]
+        public async Task<IActionResult> Create([FromForm] EmployeeDTO employeeDTO)
         {
             //modelstate
             if (!ModelState.IsValid)
@@ -79,7 +79,9 @@ namespace FlightAPIs.Controllers
 
         }
         //update
-        public async Task<IActionResult> employeeUpdate([FromForm] EmployeeDTO employeeDTO)
+        [Authorize(Roles ="Admin")]
+        [HttpPut("Update")]
+        public async Task<IActionResult> employee([FromForm] EmployeeDTO employeeDTO)
         {
             //modelstate
             if (!ModelState.IsValid)
@@ -120,12 +122,15 @@ namespace FlightAPIs.Controllers
                 {
                     if (ex.InnerException is SqlException exl)
                     {
+                        transaction.Rollback();
                         return BadRequest(exl.InnerException.Message);
                     }
+                    transaction.Rollback();
                     return BadRequest(ex.InnerException.Message);
                 }
                 catch (Exception ex)
                 {
+                    transaction.Rollback();
                     return BadRequest(ex.Message);
                 }
             }
@@ -133,12 +138,105 @@ namespace FlightAPIs.Controllers
         }
         //can not delete 
         //set to role 3 => role employeeBanned
+        [Authorize(Roles = "Admin")]
+        [HttpPut("employee")]
+        public async Task<IActionResult> RoleChange(int employeeID , int role)
+        {
+            Admin existsEmployee = await db.Admins.Where(u => u.Id == employeeID).FirstOrDefaultAsync();
+            if (existsEmployee == null)
+            {
+                return BadRequest("invalid employeeID");
+            }
+            if(role != 3 && role != 0)
+            {
+                return BadRequest("invalid role");
+            }
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    existsEmployee.UserType = role;
+                    db.Admins.Update(existsEmployee);
+                    db.SaveChanges();
+                    transaction.Commit();
+                    return Ok("update role for employee success");
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    if(ex.InnerException is SqlException exl)
+                    {
+                        transaction.Rollback();
+                        return BadRequest(exl.InnerException.Message);
+                    }
+                    transaction.Rollback();
+                    return BadRequest(ex.InnerException.Message);
 
+                }
+            } 
+        }
         //read 
         //readall 
+        [Authorize(Roles = "Admin")]
+        [HttpGet("employee")]
+        public async Task<IActionResult> readAll()
+        {
+            try
+            {
+                return Ok(db.Admins.Where(u=>u.UserType!=2).ToList());
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
+        }
         //readby id 
-        //readby type 
-        //readby
+        [Authorize(Roles = "Admin")]
+        [HttpGet("employee")]
+        public async Task<IActionResult> readById(int id)
+        {
+            try
+            {
+                return Ok(await db.Admins.Where(u => u.UserType != 2 && u.Id == id).FirstOrDefaultAsync());
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.InnerException!.Message);
+            }
+        }
+        //readby Admintype 
+        [Authorize(Roles = "Admin")]
+        [HttpGet("employee")]
+        public async Task<IActionResult> readByType(int id)
+        {
+            if(id != 0 && id!= 3)
+            {
+                return BadRequest("wrong type");
+            }
+            try
+            {
+                return Ok(await db.Admins.Where(u=>u.UserType == id).ToListAsync());
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.InnerException!.Message);
+            }
+        }
+        //read by patrition
+        [Authorize(Roles = "Admin")]
+        [HttpGet("employee")]
+        public async Task<IActionResult> readPagition(int pageNumber)
+        {
+            List<Admin> admins = await db.Admins.OrderBy(u => u.Id).Where(u=>u.UserType != 2).Skip(pageNumber*3).Take(3).ToListAsync();//index clusterd in id admin 
+            try
+            {
+                return Ok(admins);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.InnerException!.Message);
+            }
+        }
+        
 
 
 

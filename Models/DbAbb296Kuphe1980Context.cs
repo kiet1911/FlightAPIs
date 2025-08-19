@@ -10,6 +10,7 @@ public partial class DbAbb296Kuphe1980Context : DbContext
     protected String DbConnectionString { get; set; } = "Server=db25660.public.databaseasp.net; Database=db25660; User Id=db25660; Password=Cq7%w4-D@dK8; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;";
     public DbAbb296Kuphe1980Context()
     {
+
     }
 
     public DbAbb296Kuphe1980Context(DbContextOptions<DbAbb296Kuphe1980Context> options)
