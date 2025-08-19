@@ -32,7 +32,7 @@ namespace FlightAPIs.Controllers
             }
             //exists code in ticket 
             //copare onle one code unique in baggage
-            bool ticketExists = db_contex.TicketManagers.Where(u => u.Code == baggage.Code).Any();
+            bool ticketExists = await db_contex.TicketManagers.Where(u => u.Code == baggage.Code).AnyAsync();
             if (!ticketExists)
             {
                 return BadRequest("the ticket is not exists please check again");
