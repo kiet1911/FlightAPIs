@@ -6,7 +6,8 @@ namespace FlightAPIs.Models;
 
 public partial class DbAbb296Kuphe1980Context : DbContext
 {
-    protected String DbConnectionString { get; set; } = "data Source=SQL1004.site4now.net;Initial Catalog=db_abb296_kuphe1980;User Id=db_abb296_kuphe1980_admin;Password=Kuphe1980";
+    //protected String DbConnectionString { get; set; } = "data Source=SQL1004.site4now.net;Initial Catalog=db_abb296_kuphe1980;User Id=db_abb296_kuphe1980_admin;Password=Kuphe1980";
+    protected String DbConnectionString { get; set; } = "Server=db25660.public.databaseasp.net; Database=db25660; User Id=db25660; Password=Cq7%w4-D@dK8; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;";
     public DbAbb296Kuphe1980Context()
     {
     }
