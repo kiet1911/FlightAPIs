@@ -15,8 +15,8 @@ namespace FlightAPIs.Controllers
     {
         DbAbb296Kuphe1980Context db_context = new DbAbb296Kuphe1980Context();//connection
         public IConfiguration Configuration;//to config data from appsetting 
-        public ILogger<FlightScheduleController> Logger;//logging,messager to cli 
-        public PaymentController(IConfiguration _configuration, ILogger<FlightScheduleController> _logger)
+        public ILogger<PaymentController> Logger;//logging,messager to cli 
+        public PaymentController(IConfiguration _configuration, ILogger<PaymentController> _logger)
         {
             this.Configuration = _configuration;
             this.Logger = _logger;
@@ -25,7 +25,7 @@ namespace FlightAPIs.Controllers
         //create payment
         [Authorize(Policy ="roleSecurity")]
         [HttpPost]
-        public async Task<IActionResult> paymentCreate([FromForm] Payment payment)
+        public async Task<IActionResult> Create([FromForm] Payment payment)
         {
             //validation 
             if (!ModelState.IsValid)
@@ -63,7 +63,7 @@ namespace FlightAPIs.Controllers
         //update payment
         [Authorize(Policy = "roleSecurity")]
         [HttpPut]
-        public async Task<IActionResult> paymentEdit([FromForm] Payment payment)
+        public async Task<IActionResult> update([FromForm] Payment payment)
         {
             //validation 
             if (!ModelState.IsValid)
@@ -112,10 +112,10 @@ namespace FlightAPIs.Controllers
             }
 
         }
-        //update payment
+        //delete payment
         [Authorize(Policy = "roleSecurity")]
         [HttpDelete]
-        public async Task<IActionResult> paymentDelete(int idpayment)
+        public async Task<IActionResult> delete(int idpayment)
         {
 
             //check payment in ticket 
@@ -147,7 +147,7 @@ namespace FlightAPIs.Controllers
         //read payment
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> paymentAll()
+        public async Task<IActionResult> readAll()
         {
             try
             {
@@ -161,7 +161,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> paymentById(int id)
+        public async Task<IActionResult> readById(int id)
         {
             try
             {
@@ -176,7 +176,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> paymentByUserId(int id)
+        public async Task<IActionResult> readByUserId(int id)
         {
             try
             {
@@ -191,7 +191,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> paymentContainEmail(string text)
+        public async Task<IActionResult> readByContainEmail(string text)
         {
             try
             {
@@ -206,7 +206,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> paymentContainName(string text)
+        public async Task<IActionResult> readByContainName(string text)
         {
             try
             {
@@ -221,7 +221,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> paymentContainPayer(string text)
+        public async Task<IActionResult> readByContainPayer(string text)
         {
             try
             {

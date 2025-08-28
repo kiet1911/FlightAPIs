@@ -12,7 +12,7 @@ namespace FlightAPIs.Controllers
     [Route("api/[controller]/[action]")]
     public class WeatherForecastController : ControllerBase
     {
-        DbAbb296Kuphe1980Context db_contex = new DbAbb296Kuphe1980Context();
+       
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -35,21 +35,6 @@ namespace FlightAPIs.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
-        }
-
-        [HttpGet]
-        public new async Task<TicketManager?> User()
-        {
-
-            var dataF = await db_contex.TicketManagers.FindAsync(2);
-            if(dataF != null)
-            {
-                db_contex.Entry(dataF).Reference(x => x.FlightSchedules).Load();
-
-                return dataF;
-            }
-            return null;
-
         }
     }
 }
