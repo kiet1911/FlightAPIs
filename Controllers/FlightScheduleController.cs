@@ -26,7 +26,7 @@ namespace FlightAPIs.Controllers
         //create Flight schedule
         [Authorize(Policy = "roleSecurity")]
         [HttpPost]
-        public async Task<IActionResult> flightCreate([FromForm] FlightSchedule flightSchedule)
+        public async Task<IActionResult> create([FromForm] FlightSchedule flightSchedule)
         {
             //check if there is null field or error 
             if (!ModelState.IsValid)
@@ -73,7 +73,7 @@ namespace FlightAPIs.Controllers
         //edit Flight schedule
         [Authorize(Policy = "roleSecurity")]
         [HttpPut]
-        public async Task<IActionResult> flightEdit([FromForm] FlightSchedule flightSchedule)
+        public async Task<IActionResult> update([FromForm] FlightSchedule flightSchedule)
         {
             //check if there is null field or error 
             if (!ModelState.IsValid)
@@ -104,7 +104,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpDelete]
-        public async Task<IActionResult> flightDelete(int? id)
+        public async Task<IActionResult> delete(int? id)
         {
             if(id == null)
             {
@@ -138,13 +138,13 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> flightAll()
+        public async Task<IActionResult> readAll()
         {
             return Ok(await db_context.FlightSchedules.ToListAsync());
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> flightById(int? id)
+        public async Task<IActionResult> readById(int? id)
         {
             if (id == null)
             {
@@ -163,7 +163,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> flightByStatus(string status)
+        public async Task<IActionResult> readByStatus(string status)
         {
             if (status == null)
             {
@@ -182,7 +182,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> flightByDate(DateTime? departure , DateTime? arrival)
+        public async Task<IActionResult> readByDate(DateTime? departure , DateTime? arrival)
         {
             if (departure == null || arrival == null)
             {

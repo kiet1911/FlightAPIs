@@ -13,8 +13,8 @@ namespace FlightAPIs.Controllers
     {
         DbAbb296Kuphe1980Context db_contex = new DbAbb296Kuphe1980Context();
         public IConfiguration Configuration;//to take data from appsetting 
-        public ILogger<UserController> Logger;
-        public BaggageController(IConfiguration _configuration, ILogger<UserController> _logger)
+        public ILogger<BaggageController> Logger;
+        public BaggageController(IConfiguration _configuration, ILogger<BaggageController> _logger)
         {
             this.Configuration = _configuration;
             this.Logger = _logger;
@@ -22,7 +22,7 @@ namespace FlightAPIs.Controllers
         //create 
         [Authorize(Policy = "roleSecurity")]
         [HttpPost]
-        public async Task<IActionResult> baggageCreate([FromForm] Baggage baggage)
+        public async Task<IActionResult> create([FromForm] Baggage baggage)
         {
             baggage.User = null;
             baggage.CarryonBag = 7;
@@ -77,7 +77,7 @@ namespace FlightAPIs.Controllers
         //edit
         [Authorize(Policy = "roleSecurity")]
         [HttpPut]
-        public async Task<IActionResult> baggageUpdate([FromForm] Baggage baggage)
+        public async Task<IActionResult> update([FromForm] Baggage baggage)
         {
             baggage.User = null;
             baggage.CarryonBag = 7;
@@ -132,7 +132,7 @@ namespace FlightAPIs.Controllers
         //delete
         [Authorize(Policy = "roleSecurity")]
         [HttpDelete]
-        public async Task<IActionResult> baggageDelete(int id)
+        public async Task<IActionResult> delete(int id)
         {
             using (var transaction = db_contex.Database.BeginTransaction())
             {
@@ -158,7 +158,7 @@ namespace FlightAPIs.Controllers
         //get 
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> baggageAll()
+        public async Task<IActionResult> readAll()
         {
             try
             {
@@ -171,7 +171,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> baggageById(int id)
+        public async Task<IActionResult> readById(int id)
         {
             try
             {
@@ -184,7 +184,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> baggageUserId(int userId)
+        public async Task<IActionResult> readByUserId(int userId)
         {
             try
             {
@@ -197,7 +197,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> baggageCode(String CodeDetail)
+        public async Task<IActionResult> readByCode(String CodeDetail)
         {
             try
             {

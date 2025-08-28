@@ -17,8 +17,8 @@ namespace FlightAPIs.Controllers
     {
         DbAbb296Kuphe1980Context db_context = new DbAbb296Kuphe1980Context();//connection
         public IConfiguration Configuration;//to config data from appsetting 
-        public ILogger<FlightScheduleController> Logger;//logging,messager to cli 
-        public TicketManagerController(IConfiguration _configuration, ILogger<FlightScheduleController> _logger)
+        public ILogger<TicketManagerController> Logger;//logging,messager to cli 
+        public TicketManagerController(IConfiguration _configuration, ILogger<TicketManagerController> _logger)
         {
             this.Configuration = _configuration;
             this.Logger = _logger;
@@ -26,7 +26,7 @@ namespace FlightAPIs.Controllers
         //create
         [Authorize(Policy = "roleSecurity")]
         [HttpPost]
-        public async Task<IActionResult> ticketCreate([FromForm]TicketDTO ticketDTO)
+        public async Task<IActionResult> Create([FromForm]TicketDTO ticketDTO)
         {
             Dictionary<string,string> ticketError = await TicketValidation.ticketValidation(ticketDTO, db_context,false);
             ticketError.TryGetValue("Error", out string errerMessage);
@@ -80,7 +80,7 @@ namespace FlightAPIs.Controllers
         //edit
         [Authorize(Policy = "roleSecurity")]
         [HttpPut]
-        public async Task<IActionResult> ticketUpdate([FromForm] TicketDTO ticketDTO)
+        public async Task<IActionResult> update([FromForm] TicketDTO ticketDTO)
         {
             //only update userid , status , payid
             //validation
@@ -129,14 +129,14 @@ namespace FlightAPIs.Controllers
         //read : all , byID , userId Status , seat , 
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> ticketALL()
+        public async Task<IActionResult> readALL()
         {
             return Ok(await db_context.TicketManagers.ToListAsync());
         }
 
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> ticketUserIdStatus(int UserId , int status)
+        public async Task<IActionResult> readByIdStatus(int UserId , int status)
         {
             try
             {
@@ -149,7 +149,7 @@ namespace FlightAPIs.Controllers
         }
         [Authorize(Policy = "roleSecurity")]
         [HttpPost]
-        public async Task<IActionResult> ticketByObject(string type, int data)
+        public async Task<IActionResult> readByObject(string type, int data)
         {
             var arrayAttribute = new string[] { "Id", "FlightSchedulesId", "UserId", "Status", "SeatLocation", "PayId" };
             if (arrayAttribute.Contains(type))

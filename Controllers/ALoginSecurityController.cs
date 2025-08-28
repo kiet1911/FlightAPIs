@@ -19,8 +19,8 @@ namespace FlightAPIs.Controllers
     {
         DbAbb296Kuphe1980Context db_contex = new DbAbb296Kuphe1980Context();
         public IConfiguration Configuration;//to take data from appsetting 
-        public ILogger<UserController> Logger;
-        public ALoginSecurityController(IConfiguration _configuration, ILogger<UserController> _logger)
+        public ILogger<ALoginSecurityController> Logger;
+        public ALoginSecurityController(IConfiguration _configuration, ILogger<ALoginSecurityController> _logger)
         {
             this.Configuration = _configuration;
             this.Logger = _logger;

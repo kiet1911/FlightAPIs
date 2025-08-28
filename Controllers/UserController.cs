@@ -39,7 +39,7 @@ namespace FlightAPIs.Controllers
         //create user
         [Authorize(Policy = "roleSecurity")]
         [HttpPost]
-        public async Task<IActionResult> userCreate([FromForm] User user)
+        public async Task<IActionResult> Create([FromForm] User user)
         {
             if (!ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace FlightAPIs.Controllers
         //update user
         [Authorize(Policy = "roleSecurity")]
         [HttpPut]
-        public async Task<IActionResult> userUpdate([FromForm] User user)
+        public async Task<IActionResult> update([FromForm] User user)
         {
             if (!ModelState.IsValid)
             {
@@ -140,7 +140,7 @@ namespace FlightAPIs.Controllers
         //take signle user by id
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> userDetailById([FromQuery] GetUserId i)
+        public async Task<IActionResult> readById([FromQuery] GetUserId i)
         {
             try
             {
@@ -160,7 +160,7 @@ namespace FlightAPIs.Controllers
         //take user by pagition 
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<IActionResult> userOffset(int? id = 0)
+        public async Task<IActionResult> readOffset(int? id = 0)
         {
             int skipAmount = (int)id * 3;
             List<User> userLists;
@@ -181,7 +181,7 @@ namespace FlightAPIs.Controllers
         //Take all user  
         [Authorize(Policy = "roleSecurity")]
         [HttpGet]
-        public async Task<List<User>?> userAll()
+        public async Task<List<User>?> readAll()
         {
             Logger.LogInformation("start GetUser At {0}", DateTime.Now.Millisecond);//start logging 
             try

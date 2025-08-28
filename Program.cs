@@ -123,12 +123,12 @@ var app = builder.Build();
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "FlightAPI V1");
     });
-    //app.MapGet("/", async context =>
-    //{
-    //    await Task.Run(() => context.Response.Redirect("./swagger/index.html"));
-    //}
-    //);
-    
+app.MapGet("/", async context =>
+{
+    await Task.Run(() => context.Response.Redirect("./swagger/index.html"));
+}
+);
+
 //}
 app.UseRouting();
 //app.UseCors();
